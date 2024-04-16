@@ -1,4 +1,5 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_slidable/src/auto_close_behavior.dart';
 import 'package:flutter_slidable/src/notifications_old.dart';
@@ -25,6 +26,7 @@ class Slidable extends StatefulWidget {
     this.closeOnScroll = true,
     this.startActionPane,
     this.endActionPane,
+    this.decoration,
     this.direction = Axis.horizontal,
     this.dragStartBehavior = DragStartBehavior.down,
     this.useTextDirection = true,
@@ -68,6 +70,8 @@ class Slidable extends StatefulWidget {
   /// When [direction] is [Axis.horizontal] and [useTextDirection] is true, the
   /// [startActionPane] is determined by the ambient [TextDirection].
   final ActionPane? endActionPane;
+
+  final Decoration? decoration;
 
   /// The direction in which this [Slidable] can be dragged.
   ///
@@ -257,12 +261,15 @@ class _SlidableState extends State<Slidable>
       children: <Widget>[
         if (actionPane != null)
           Positioned.fill(
-            child: ClipRect(
-              clipper: _SlidableClipper(
-                axis: widget.direction,
-                controller: controller,
+            child: Container(
+              decoration: widget.decoration,
+              child: ClipRect(
+                clipper: _SlidableClipper(
+                  axis: widget.direction,
+                  controller: controller,
+                ),
+                child: actionPane,
               ),
-              child: actionPane,
             ),
           ),
         content,
